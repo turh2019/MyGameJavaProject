@@ -9,8 +9,10 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import java.awt.Rectangle;
 
 import java.awt.image.BufferedImage;
+
 public class Player extends Entity
 { 
     GamePanel gp;
@@ -24,6 +26,7 @@ public class Player extends Entity
         this.keyH = keyH;
         screenX =gp.screenWidth/2 -(gp.tileSize/2);
         screenY = gp.screenHeight/2-(gp.tileSize/2);
+        soidArea = new Rectangle(8,6,32,32);
         setDefaultValues();
        // getPlayerImg();
         direction ="down";

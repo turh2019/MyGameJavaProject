@@ -33,6 +33,7 @@ public class TileManger {
 
                 tile[1] = new Tile();
                 tile[1].img = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
+                tile[1].collision =true;
      
 
             }catch(IOException e)
@@ -59,8 +60,7 @@ public class TileManger {
                 while(col<gp.maxWorldCol){
                     String numbers[] =line.split(" ");
                     int num =Integer.parseInt(numbers[col]);
-                    if(num!=0)
-                    System.out.println("num : " +num);
+                
 
                     mapTileNum[col][row] = num;
                     col++;
@@ -100,8 +100,7 @@ public class TileManger {
             && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY 
             && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)
             {
-                if(tileNum !=0)
-                System.out.println(tileNum);
+            
                 g2.drawImage(tile[tileNum].img, screenX, screenY , gp.tileSize, gp.tileSize, null);
             }
             Worldcol++;  
