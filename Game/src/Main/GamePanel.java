@@ -20,16 +20,19 @@ public class GamePanel extends JPanel implements Runnable{
    public final int screenWidth = tileSize * maxScreenCol; //768 pixels
    public final int screenHeight = tileSize * maxScreenRow; //576 pixels
 
-
-
-
+    //worldMap SETTINGS
+    public final int maxWorldCol =50; 
+    public final int maxWorldRow =50;
+    public final int maxWorldWidth =tileSize *maxWorldCol;
+    public final int maxWorldHeight =tileSize *maxWorldRow;
+    //fps
     int FPS =60;
     
     TileManger tileM = new TileManger(this);
     KeyHandler keyH = new KeyHandler();
     Thread gameThread;
 
-    Player player = new Player(this, keyH);
+   public Player player = new Player(this, keyH);
     // set Players default Position
 
   
@@ -75,7 +78,7 @@ public class GamePanel extends JPanel implements Runnable{
            }
 
             if(timer >= 1000000000){
-                System.out.println("FPS: " + DrowCount);
+              //  System.out.println("FPS: " + DrowCount);
                 DrowCount = 0;
                 timer =0;
             }
