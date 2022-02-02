@@ -8,33 +8,50 @@ import javax.swing.JPanel;
 
 import entity.Player;
 import tile.TileManger;
+import Objects.Object;
+
+enum Gamestate{
+    GamePlay,
+    Pause,
+}
 
 public class GamePanel extends JPanel implements Runnable{
     
+    
+ 
+    //screen Settings
     final int originalTileSize =16; //16x16 tile
     final int scale =3; 
 
-   public final int tileSize = originalTileSize *scale; //48x48
-   public final int maxScreenCol =16;
-   public final int maxScreenRow =12;
-   public final int screenWidth = tileSize * maxScreenCol; //768 pixels
-   public final int screenHeight = tileSize * maxScreenRow; //576 pixels
+   public  int tileSize = originalTileSize *scale; //48x48
+   public  int maxScreenCol =16;
+   public  int maxScreenRow =12;
+   public  int screenWidth = tileSize * maxScreenCol; //768 pixels
+   public  int screenHeight = tileSize * maxScreenRow; //576 pixels
 
     //worldMap SETTINGS
     public final int maxWorldCol =50; 
     public final int maxWorldRow =50;
-    public final int maxWorldWidth =tileSize *maxWorldCol;
-    public final int maxWorldHeight =tileSize *maxWorldRow;
+    public final int WorldWidth = tileSize* maxWorldCol;
+    public final int WorldHeight = tileSize* maxScreenRow;
     //fps
     int FPS =60;
     
-    TileManger tileM = new TileManger(this);
-    KeyHandler keyH = new KeyHandler();
+    TileManger tileM = new TileManger(this);//Tile Manger
+    public collisonChecker checker = new collisonChecker(this);//collison Checker
+    public AssetSetter assetSetter =new AssetSetter(this);//set objs
+    public Sound sound = new Sound();//sound display
+    public Sound music = new Sound();//sound music
     Thread gameThread;
 
-   public Player player = new Player(this, keyH);
-    // set Players default Position
+    public UI ui = new UI(this);//ui
 
+    KeyHandler keyH = new KeyHandler(this); //Key Handler
+    public Player player = new Player(this, keyH);  //player
+    public Object obj[] = new Object[10];//objs
+    
+    //GameState
+    public Gamestate Gamestate ;
   
 
     public GamePanel(){
@@ -43,6 +60,15 @@ public class GamePanel extends JPanel implements Runnable{
         this.setDoubleBuffered(true);
         this.addKeyListener(keyH);
         this.setFocusable(true);
+    }
+
+    public void setupGame()
+    {
+
+        assetSetter.setObject();
+
+        //playMusic(i); // when i have Music fot the game
+        Gamestate = Gamestate.GamePlay;
     }
 
     public void startGameThread()
@@ -92,7 +118,13 @@ public class GamePanel extends JPanel implements Runnable{
  
     public void update()
     {
-        player.update();
+        if(Gamestate == Gamestate.GamePlay){
+            player.update();
+        }  
+        
+        if(Gamestate == Gamestate.Pause){
+           
+        }  
     }
 
     @Override
@@ -101,11 +133,41 @@ public class GamePanel extends JPanel implements Runnable{
         super.paintComponent(g);
 
         Graphics2D g2 = (Graphics2D)g;
+        //tile
         tileM.draw(g2);
 
+        //object
+        for(int i =0; i < obj.length ;i++)
+        {
+            if(obj[i]!=null){
+                obj[i].drow(g2, this);
+            }
+        }
+
+        //player
         player.drow(g2);
+
+        //UI 
+        ui.draw(g2); 
 
         g2.dispose();
     }
  
+
+        public  void playMusic(int i){
+            music.setFile(i);
+            music.play();
+            music.loop();
+        }
+
+        public void stopMusic(){
+            music.stop();
+        }
+
+        public void PlaySound(int i)
+        {
+            sound.setFile(i);
+            sound.play();
+        }
+
 }

@@ -1,25 +1,30 @@
 package tile;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
+import javax.swing.text.Utilities;
 
 import Main.GamePanel;
+import Main.UtilityTool;
+
 import java.awt.Graphics2D;
 
 
+import java.awt.image.BufferedImage;
 public class TileManger {
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
     public TileManger(GamePanel gp){
 
         this.gp =gp;
 
-        tile = new Tile[10];
+        tile = new Tile[100];
         mapTileNum = new  int [gp.maxWorldCol][gp.maxWorldRow];
         getTileImage();
         loadMap("/maps/map_01.txt");
@@ -27,19 +32,43 @@ public class TileManger {
 
     public void getTileImage()
     {
-            try{
-                tile[0] = new Tile();
-                tile[0].img = ImageIO.read(getClass().getResourceAsStream("/tiles/grass.png"));
+        //Grasse
+        for(int i =1; i < 16; i ++)
+        {
+            String Path ="/tiles/Grasse/Grasse"+String.format("%02d", i) +".png";
+            System.out.println(Path);
+            setUp(i-1+10,Path, false);
+        }
+       
+          //Ground
+          for(int i =30; i < 43; i ++)
+          {
+              String Path ="/tiles/Ground/Ground"+String.format("%02d", i-29) +".png";
+              System.out.println(Path);
+              setUp(i,Path, false);
+          }
+          //water
+          for(int i =50; i < 63; i ++)
+          {
+              String Path ="/tiles/water/water"+String.format("%02d", i-49) +".png";
+              System.out.println(Path);
+              setUp(i,Path, true);
+          }
 
-                tile[1] = new Tile();
-                tile[1].img = ImageIO.read(getClass().getResourceAsStream("/tiles/wall.png"));
-                tile[1].collision =true;
-     
+    }
 
-            }catch(IOException e)
-            {
-                e.printStackTrace();
-            }
+    public void setUp (int index, String ImgPath,boolean Collision)
+    {
+        
+        UtilityTool uTool = new UtilityTool();
+        try {
+            tile[index] = new Tile();
+            tile[index].img = ImageIO.read(getClass().getResourceAsStream(ImgPath));
+            tile[index].img = uTool.scaleImage(tile[index].img, gp.tileSize, gp.tileSize);
+            tile[index].collision = Collision;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void loadMap(String filePathe) 
@@ -92,16 +121,22 @@ public class TileManger {
 
             int worldX= Worldcol * gp.tileSize;
             int worldY= Worldrow * gp.tileSize;
-            int screenX = worldX - gp.player.worldX + gp.player.screenX;
-            int screenY = worldY - gp.player.worldY + gp.player.screenY;
+            double screenX = worldX - gp.player.worldX + gp.player.screenX;
+            double screenY = worldY - gp.player.worldY + gp.player.screenY;
+            
 
+
+            //Stop Moving the Camera at the edge
             if(worldX + gp.tileSize > gp.player.worldX - gp.player.screenX 
             && worldX - gp.tileSize < gp.player.worldX + gp.player.screenX
             && worldY + gp.tileSize > gp.player.worldY - gp.player.screenY 
             && worldY - gp.tileSize < gp.player.worldY + gp.player.screenY)
             {
-            
-                g2.drawImage(tile[tileNum].img, screenX, screenY , gp.tileSize, gp.tileSize, null);
+               
+                if(tileNum == 3){
+                    g2.drawImage(tile[0].img, (int)screenX, (int)screenY , null);
+                }
+                g2.drawImage(tile[tileNum].img, (int)screenX, (int)screenY ,  null);
             }
             Worldcol++;  
             if(Worldcol == gp.maxWorldCol){

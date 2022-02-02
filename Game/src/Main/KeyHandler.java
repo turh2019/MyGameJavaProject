@@ -3,9 +3,16 @@ package Main;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+
+
 public class KeyHandler implements KeyListener
 {
     public boolean upPressed , downPressed , leftPressed , rightPressed;
+
+    GamePanel gp;
+   public KeyHandler(GamePanel gp){
+    this.gp =gp;
+   }
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -36,7 +43,26 @@ public class KeyHandler implements KeyListener
         {
             rightPressed = true;
         }
-        
+        if(code == KeyEvent.VK_P)
+        {
+
+            switch (gp.Gamestate) 
+            {
+                case GamePlay:
+                    gp.Gamestate = Gamestate.Pause;
+                    break;
+                case Pause:
+                  
+                    gp.Gamestate = Gamestate.GamePlay;
+               
+                    break;
+           
+            
+            }
+
+           
+        }
+
     }
 
     @Override

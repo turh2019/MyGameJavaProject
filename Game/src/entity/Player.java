@@ -2,6 +2,7 @@ package entity;
 
 import Main.GamePanel;
 import Main.KeyHandler;
+import Main.UtilityTool;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -21,14 +22,23 @@ public class Player extends Entity
 
     public final int screenX;
     public final int screenY;
+
+   
     public Player(GamePanel gp ,KeyHandler keyH){
         this.gp =gp;
         this.keyH = keyH;
         screenX =gp.screenWidth/2 -(gp.tileSize/2);
         screenY = gp.screenHeight/2-(gp.tileSize/2);
-        soidArea = new Rectangle(8,6,32,32);
+        soidArea = new Rectangle();
+        soidArea.x =8;
+        soidArea.y =10;
+        SolidAreaDefaultX = soidArea.x;
+        SolidAreaDefaultY =  soidArea.y;
+        soidArea.width =32;
+        soidArea.height=32;
+        
         setDefaultValues();
-       // getPlayerImg();
+        getPlayerImg();
         direction ="down";
     }
 
@@ -36,34 +46,62 @@ public class Player extends Entity
         worldX = gp.tileSize *23;
         worldY = gp.tileSize *21;
         speed =4;
+        
     }
 
     public void getPlayerImg()
     {
-        numOfSprit=2;
-        try{
-            walkUpImgs = new BufferedImage[numOfSprit];
-            for(int i =0; i > walkUpImgs.length; i++){
-                walkUpImgs[i] =ImageIO.read(getClass().getResourceAsStream("/player/boy_up" +i +".png"));
-            }
+        numOfSprit=3;
 
-            walkDownImgs = new BufferedImage[numOfSprit];
-            for(int i =0; i > walkDownImgs.length; i++){
-                walkDownImgs[i] =ImageIO.read(getClass().getResourceAsStream("/player/boy_down" +i+".png"));
-            }
+        walkUpImgs = new BufferedImage[numOfSprit];
+        setUp("walkUpImgs",0,"Up/player_0");
+        setUp("walkUpImgs",1,"Up/player_1");
+        setUp("walkUpImgs",2,"Up/player_2");
+        walkDownImgs = new BufferedImage[numOfSprit];
+        setUp("walkDownImgs",0,"Down/player_0");
+        setUp("walkDownImgs",1,"Down/player_1");
+        setUp("walkDownImgs",2,"Down/player_2");
+        walkLeftImgs = new BufferedImage[numOfSprit];
+        setUp("walkLeftImgs",0,"Left/player_0");
+        setUp("walkLeftImgs",1,"Left/player_1");
+        setUp("walkLeftImgs",2,"Left/player_2");
+        walkRightImgs = new BufferedImage[numOfSprit];
+        setUp("walkRightImgs",0,"Right/player_0");
+        setUp("walkRightImgs",1,"Right/player_1");
+        setUp("walkRightImgs",2,"Right/player_2");
+    }
 
-            walkLeftImgs = new BufferedImage[numOfSprit];
-            for(int i =0; i > walkLeftImgs.length; i++){
-                walkLeftImgs[i] =ImageIO.read(getClass().getResourceAsStream("/player/boy_left" + i + ".png"));
+    public void setUp (String arr,int index, String ImgPath)
+    {
+        UtilityTool uTool = new UtilityTool();
+        try {
+            if(arr =="walkUpImgs")
+            {
+              
+                walkUpImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
+                walkUpImgs[index] = uTool.scaleImage(walkUpImgs[index], gp.tileSize, gp.tileSize);
+                return;
             }
-
-            walkRightImgs = new BufferedImage[numOfSprit];
-            for(int i =0; i > walkRightImgs.length; i++){
-                walkRightImgs[i] =ImageIO.read(getClass().getResourceAsStream("/player/boy_Right" + i + ".png"));
+            if(arr =="walkDownImgs")
+            {
+                walkDownImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
+                walkDownImgs[index] = uTool.scaleImage(walkDownImgs[index], gp.tileSize, gp.tileSize);
+                return;
             }
-
-        }catch(IOException e)
-        {
+            if(arr =="walkLeftImgs")
+            {
+                walkLeftImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
+                walkLeftImgs[index] = uTool.scaleImage(walkLeftImgs[index], gp.tileSize, gp.tileSize);
+                return;
+            }
+            if(arr =="walkRightImgs")
+            {
+                walkRightImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
+                walkRightImgs[index] = uTool.scaleImage(walkRightImgs[index], gp.tileSize, gp.tileSize);
+                return;
+            }
+           
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -74,38 +112,64 @@ public class Player extends Entity
         {
             if(keyH.upPressed ==true){
                 direction ="up";
-               worldY -= speed;       
+                     
             }
             else if(keyH.downPressed ==true){
                 direction ="down";
-                worldY += speed;
+                
             }
             else if(keyH.leftPressed ==true){
                 direction ="left";
-                worldX -= speed;
+               
             }
             else if(keyH.rightPressed ==true){
                 direction ="right";
-                worldX += speed;
+                
+            }
+            //check tileCollision
+            collisiOn =false;
+            gp.checker.checkTile(this);
+
+            //check ObjCollision
+           int objIndex = gp.checker.checkObj(this, true);
+           PickUpItem(objIndex);
+
+            if(!collisiOn){
+                switch(direction){
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed;break;
+                    case "left":worldX -= speed;break;
+                    case "right":worldX += speed;break;   
+                }
+               
+                
             }
 
             spriteCounter++;
-
-            if(spriteCounter >12){
+            if(spriteCounter >7){
                 spriteNum++;
-                if(spriteNum> numOfSprit){
+                if(spriteNum >= numOfSprit){
                     spriteNum =0;
                 }
+                spriteCounter =0;
             }
 
+        }else{
+            spriteNum =0;
         }
     
     }
-
+    public void PickUpItem(int index)
+    {
+        if(index !=999){
+                
+           
+        }
+    }
 
     public void drow(Graphics2D g2){
         BufferedImage image = null;
-       /* switch (direction) {
+        switch (direction) {
             case "up":
                 image =walkUpImgs[spriteNum];
                 break;
@@ -118,10 +182,14 @@ public class Player extends Entity
             case "right":
                 image =walkRightImgs[spriteNum];
                 break;
+            case "Chest":
+
+                break;
            
-        } */
-        g2.setColor(Color.white);
-        g2.fillRect( screenX,screenY,gp.tileSize,gp.tileSize);
-       // g2.drawImage(image,screenX ,screenY,gp.tileSize,gp.tileSize,null);
+        } 
+
+        g2.drawImage(image,screenX ,screenY,null);
+        g2.setColor(Color.red);
+        g2.drawRect(screenX+ soidArea.x ,screenY+ soidArea.y,soidArea.width,soidArea.height);
     }
 }
