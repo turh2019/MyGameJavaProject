@@ -3,6 +3,7 @@ package entity;
 import Main.GamePanel;
 import Main.KeyHandler;
 import Main.UtilityTool;
+import Main.GamePanel.Gamestate;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -16,7 +17,7 @@ import java.awt.image.BufferedImage;
 
 public class Player extends Entity
 { 
-    GamePanel gp;
+  
     KeyHandler keyH;  
     
 
@@ -25,15 +26,19 @@ public class Player extends Entity
 
    
     public Player(GamePanel gp ,KeyHandler keyH){
-        this.gp =gp;
+        super(gp);
         this.keyH = keyH;
+
         screenX =gp.screenWidth/2 -(gp.tileSize/2);
         screenY = gp.screenHeight/2-(gp.tileSize/2);
+
         soidArea = new Rectangle();
         soidArea.x =8;
         soidArea.y =10;
+        
         SolidAreaDefaultX = soidArea.x;
         SolidAreaDefaultY =  soidArea.y;
+
         soidArea.width =32;
         soidArea.height=32;
         
@@ -43,69 +48,42 @@ public class Player extends Entity
     }
 
     public void setDefaultValues(){
+
         worldX = gp.tileSize *23;
         worldY = gp.tileSize *21;
-        speed =4;
+        speed = 4;
+
+        //player Statuts
+        MaxLife = 6;
+        life = MaxLife;
         
     }
 
     public void getPlayerImg()
     {
         numOfSprit=3;
-
         walkUpImgs = new BufferedImage[numOfSprit];
-        setUp("walkUpImgs",0,"Up/player_0");
-        setUp("walkUpImgs",1,"Up/player_1");
-        setUp("walkUpImgs",2,"Up/player_2");
+        walkUpImgs[0] = setUp("/player/Up/player_0.png");
+        walkUpImgs[1] = setUp("/player/Up/player_1.png");
+        walkUpImgs[2] = setUp("/player/Up/player_2.png");
+
         walkDownImgs = new BufferedImage[numOfSprit];
-        setUp("walkDownImgs",0,"Down/player_0");
-        setUp("walkDownImgs",1,"Down/player_1");
-        setUp("walkDownImgs",2,"Down/player_2");
+        walkDownImgs[0] = setUp("/player/Down/player_0.png");
+        walkDownImgs[1] = setUp("/player/Down/player_1.png");
+        walkDownImgs[2] = setUp("/player/Down/player_2.png");
+
         walkLeftImgs = new BufferedImage[numOfSprit];
-        setUp("walkLeftImgs",0,"Left/player_0");
-        setUp("walkLeftImgs",1,"Left/player_1");
-        setUp("walkLeftImgs",2,"Left/player_2");
+        walkLeftImgs[0] =  setUp("/player/Left/player_0.png");
+        walkLeftImgs[1] = setUp("/player/Left/player_1.png");
+        walkLeftImgs[2] = setUp("/player/Left/player_2.png");
+        
         walkRightImgs = new BufferedImage[numOfSprit];
-        setUp("walkRightImgs",0,"Right/player_0");
-        setUp("walkRightImgs",1,"Right/player_1");
-        setUp("walkRightImgs",2,"Right/player_2");
+        walkRightImgs[0] = setUp("/player/Right/player_0.png");
+        walkRightImgs[1] = setUp("/player/Right/player_1.png");
+        walkRightImgs[2] = setUp("/player/Right/player_2.png");
     }
 
-    public void setUp (String arr,int index, String ImgPath)
-    {
-        UtilityTool uTool = new UtilityTool();
-        try {
-            if(arr =="walkUpImgs")
-            {
-              
-                walkUpImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
-                walkUpImgs[index] = uTool.scaleImage(walkUpImgs[index], gp.tileSize, gp.tileSize);
-                return;
-            }
-            if(arr =="walkDownImgs")
-            {
-                walkDownImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
-                walkDownImgs[index] = uTool.scaleImage(walkDownImgs[index], gp.tileSize, gp.tileSize);
-                return;
-            }
-            if(arr =="walkLeftImgs")
-            {
-                walkLeftImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
-                walkLeftImgs[index] = uTool.scaleImage(walkLeftImgs[index], gp.tileSize, gp.tileSize);
-                return;
-            }
-            if(arr =="walkRightImgs")
-            {
-                walkRightImgs[index]  = ImageIO.read(getClass().getResourceAsStream("/player/" + ImgPath +".png"));
-                walkRightImgs[index] = uTool.scaleImage(walkRightImgs[index], gp.tileSize, gp.tileSize);
-                return;
-            }
-           
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+  
     public void update()
     {
         if(keyH.upPressed ||keyH.downPressed ||keyH.leftPressed||keyH.rightPressed)
@@ -126,13 +104,21 @@ public class Player extends Entity
                 direction ="right";
                 
             }
-            //check tileCollision
+            //check tile Collision
             collisiOn =false;
             gp.checker.checkTile(this);
 
-            //check ObjCollision
-           int objIndex = gp.checker.checkObj(this, true);
-           PickUpItem(objIndex);
+            //check Obj Collision
+         //  int objIndex = gp.checker.checkObj(this, true);
+           //PickUpItem(objIndex);
+
+
+           //Check NPC Collision
+            int npcIndex =gp.checker.CheckEntity(this, gp.npc);
+            interactNPC(npcIndex);
+
+            //Chack Event
+            gp.eHandler.ChackEvent();
 
             if(!collisiOn){
                 switch(direction){
@@ -142,29 +128,49 @@ public class Player extends Entity
                     case "right":worldX += speed;break;   
                 }
                
-                
+                spriteCounter++;
+                if(spriteCounter >7){
+                    spriteNum++;
+                    if(spriteNum >= numOfSprit){
+                        spriteNum = 0;
+                    }
+                    spriteCounter = 0;
+                }
             }
 
-            spriteCounter++;
-            if(spriteCounter >7){
-                spriteNum++;
-                if(spriteNum >= numOfSprit){
-                    spriteNum =0;
-                }
-                spriteCounter =0;
+            if(collisiOn){
+                spriteNum=0;
             }
+         
+            
+                
 
         }else{
             spriteNum =0;
         }
     
     }
+
     public void PickUpItem(int index)
     {
-        if(index !=999){
+        if(index != -1){
                 
            
         }
+    }
+
+
+    public boolean isinteractNPC = false;
+
+    public void interactNPC(int index)
+    {
+        if(index == -1) { return;}
+
+        if(!keyH.spacePressed) return;
+
+        gp.gamestate = Gamestate.dialogue;
+        gp.npc[index].Speak();
+     
     }
 
     public void drow(Graphics2D g2){

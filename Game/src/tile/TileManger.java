@@ -1,13 +1,13 @@
 package tile;
 
-import java.io.BufferedInputStream;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
-import javax.swing.text.Utilities;
+
 
 import Main.GamePanel;
 import Main.UtilityTool;
@@ -15,7 +15,7 @@ import Main.UtilityTool;
 import java.awt.Graphics2D;
 
 
-import java.awt.image.BufferedImage;
+
 public class TileManger {
     GamePanel gp;
     public Tile[] tile;
@@ -36,7 +36,6 @@ public class TileManger {
         for(int i =1; i < 16; i ++)
         {
             String Path ="/tiles/Grasse/Grasse"+String.format("%02d", i) +".png";
-            System.out.println(Path);
             setUp(i-1+10,Path, false);
         }
        
@@ -44,14 +43,12 @@ public class TileManger {
           for(int i =30; i < 43; i ++)
           {
               String Path ="/tiles/Ground/Ground"+String.format("%02d", i-29) +".png";
-              System.out.println(Path);
               setUp(i,Path, false);
           }
           //water
           for(int i =50; i < 63; i ++)
           {
               String Path ="/tiles/water/water"+String.format("%02d", i-49) +".png";
-              System.out.println(Path);
               setUp(i,Path, true);
           }
 
