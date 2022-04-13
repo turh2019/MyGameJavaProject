@@ -1,9 +1,6 @@
 package Objects;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 
-import javax.imageio.ImageIO;
 import Main.GamePanel;
 import entity.Entity;
 
@@ -13,7 +10,7 @@ public class OBJ_Boots extends Entity{
     {
         super(gp);
         name = "Boots";
-        img = setUp("/Objects/Key.png");
+        img = setUp("/ObjectsImg/Key.png");
     }
 }
 

@@ -1,7 +1,6 @@
 package Main;
 
-import java.awt.Rectangle;
-import java.io.Console;
+
 
 import Main.GamePanel.Gamestate;
 

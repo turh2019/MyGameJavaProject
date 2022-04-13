@@ -95,16 +95,16 @@ public class Entity
               
                 switch (direction) {
                     case "up":
-                        image =walkUpImgs[spriteNum];
+                        image = walkUpImgs[spriteNum];
                         break;
                     case "down":
-                        image =walkDownImgs[spriteNum];
+                        image = walkDownImgs[spriteNum];
                         break;
                     case "left":
-                        image =walkLeftImgs[spriteNum];
+                        image = walkLeftImgs[spriteNum];
                         break;
                     case "right":
-                        image =walkRightImgs[spriteNum];
+                        image = walkRightImgs[spriteNum];
                         break;
                     case "Chest":
         

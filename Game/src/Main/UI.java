@@ -6,10 +6,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 
-import javax.imageio.ImageIO;
 
 import Main.GamePanel.Gamestate;
-import Objects.*;
+import Objects.OBJ_Heart;
+
 import entity.Entity;
 
 public class UI {
@@ -40,10 +40,14 @@ public class UI {
         Arial_40 =new Font("Arial",Font.PLAIN,40);
         
          //create HUD OBj
-         Entity heart = new OBJ_Heart(gp); 
-         Heart_full = heart.img; 
-         Heart_half = heart.img2; 
-         Heart_balnck = heart.img3; 
+         Entity heart = new OBJ_Heart(gp);
+         if(heart !=null){
+          System.out.println("s");
+            Heart_full = heart.img; 
+            Heart_half = heart.img2; 
+            Heart_balnck = heart.img3; 
+         }
+
     }
 
     public void draw(Graphics2D g2){
@@ -204,8 +208,14 @@ public class UI {
 
     public void DrowPlayerLife()
     {
-        int x  = -gp.tileSize;
-        int y = -gp.tileSize;
+        
+
+        if(Heart_balnck == null){
+            System.out.println("aa");
+        }
+
+        int x  = gp.tileSize / 2;
+        int y = gp.tileSize / 2;
         int i = 0;
         while(i < gp.player.MaxLife / 2){
             g2.drawImage(Heart_balnck, x, y, null);
@@ -214,8 +224,8 @@ public class UI {
         }
 
         //reset
-        x  = -gp.tileSize;
-        y = -gp.tileSize;
+        x  = gp.tileSize / 2;
+        y = gp.tileSize / 2;
         i = 0;
         //drow CurrentLife
         while(i < gp.player.life)

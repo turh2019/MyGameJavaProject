@@ -1,5 +1,7 @@
 package Objects;
 
+
+
 import java.awt.image.BufferedImage;
 
 import Main.GamePanel;
@@ -10,7 +12,8 @@ public class OBJ_KEY extends Entity {
     public OBJ_KEY(GamePanel gp){
         super(gp);
         name = "key";
-        img = setUp("/Objects/Key.png");
+        walkDownImgs = new BufferedImage[1];
+        walkDownImgs[0] = setUp("/ObjectsImg/Key.png");
 
     }
 }

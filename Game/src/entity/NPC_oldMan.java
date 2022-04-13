@@ -1,15 +1,12 @@
 package entity;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
+
 import java.util.Random;
 
-import javax.imageio.ImageIO;
+
 
 import Main.GamePanel;
-import Main.UtilityTool;
-
-import java.awt.Rectangle;
 
 
 
@@ -29,21 +26,15 @@ public class  NPC_oldMan extends NPC_{
     {
         numOfSprit=3;
         walkUpImgs = new BufferedImage[numOfSprit];
-        walkUpImgs[0] = setUp("/player/Up/player_0.png");
-        walkUpImgs[1] = setUp("/player/Up/player_1.png");
-        walkUpImgs[2] = setUp("/player/Up/player_2.png");
         walkDownImgs = new BufferedImage[numOfSprit];
-        walkDownImgs[0] = setUp("/player/Down/player_0.png");
-        walkDownImgs[1] = setUp("/player/Down/player_1.png");
-        walkDownImgs[2] = setUp("/player/Down/player_2.png");
         walkLeftImgs = new BufferedImage[numOfSprit];
-        walkLeftImgs[0] =  setUp("/player/Left/player_0.png");
-        walkLeftImgs[1] = setUp("/player/Left/player_1.png");
-        walkLeftImgs[2] = setUp("/player/Left/player_2.png");
         walkRightImgs = new BufferedImage[numOfSprit];
-        walkRightImgs[0] = setUp("/player/Right/player_0.png");
-        walkRightImgs[1] = setUp("/player/Right/player_1.png");
-        walkRightImgs[2] = setUp("/player/Right/player_2.png");
+        for(int i =0; i < numOfSprit; i++){
+            walkUpImgs[i] = setUp("/player/Up/player_" + i + ".png");
+            walkDownImgs[i] = setUp("/player/Down/player_" + i +".png");
+            walkLeftImgs[i] =  setUp("/player/Left/player_" + i + ".png");
+            walkRightImgs[i] = setUp("/player/Right/player_" + i + ".png");
+        }
     }
 
  
