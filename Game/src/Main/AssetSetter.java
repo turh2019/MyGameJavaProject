@@ -1,8 +1,8 @@
 package Main;
 
-import Monsters.Mon_Slime;
 import Objects.OBJ_KEY;
 import entity.NPC_oldMan;
+import entity.Monsters.Mon_Slime;
 
 public class AssetSetter {
     GamePanel gp;
@@ -34,7 +34,7 @@ public class AssetSetter {
     }
     public void SetMonster(){
         gp.monsters[0] = new Mon_Slime(gp);
-        gp.npc[0].worldX = gp.tileSize*20;
-        gp.npc[0].worldY = gp.tileSize*25;
+        gp.monsters[0].worldX = gp.tileSize*20;
+        gp.monsters[0].worldY = gp.tileSize*20;
     }
 }

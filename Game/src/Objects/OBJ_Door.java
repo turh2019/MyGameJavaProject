@@ -8,7 +8,7 @@ public class OBJ_Door extends Entity {
     public OBJ_Door(GamePanel gp){
         super(gp);
         name = "Door";
-        img = setUp("/ObjectsImg/Key.png");
+        img = setUp("/ObjectsImg/Key.png",1);
 
         collision = true;
         soidArea.x =0;

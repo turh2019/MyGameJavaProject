@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 import Main.GamePanel;
-
+import java.awt.Rectangle;
 
 
 public class  NPC_oldMan extends NPC_{
@@ -17,6 +17,8 @@ public class  NPC_oldMan extends NPC_{
 
         direction ="down";
         speed =1;
+        speedSprit =7;
+     
         getNPCImg();
         SetDialogues();
     }
@@ -30,10 +32,10 @@ public class  NPC_oldMan extends NPC_{
         walkLeftImgs = new BufferedImage[numOfSprit];
         walkRightImgs = new BufferedImage[numOfSprit];
         for(int i =0; i < numOfSprit; i++){
-            walkUpImgs[i] = setUp("/player/Up/player_" + i + ".png");
-            walkDownImgs[i] = setUp("/player/Down/player_" + i +".png");
-            walkLeftImgs[i] =  setUp("/player/Left/player_" + i + ".png");
-            walkRightImgs[i] = setUp("/player/Right/player_" + i + ".png");
+            walkUpImgs[i] = setUp("/player/Up/player_" + i + ".png",1);
+            walkDownImgs[i] = setUp("/player/Down/player_" + i +".png",1);
+            walkLeftImgs[i] =  setUp("/player/Left/player_" + i + ".png",1);
+            walkRightImgs[i] = setUp("/player/Right/player_" + i + ".png",1);
         }
     }
 

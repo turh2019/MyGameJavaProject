@@ -25,7 +25,8 @@ public class GamePanel extends JPanel implements Runnable{
        Title,
         GamePlay,
         Pause,
-        dialogue
+        dialogue,
+        CharracterStatse,
     }
  
     //screen Settings
@@ -75,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable{
     public Entity monsters[] = new Entity[20]; // npcs
     ArrayList<Entity> entityList =  new ArrayList<>();
     //GameState
-    public Gamestate gamestate ;
+    public Gamestate gamestate;
   
 
     public GamePanel(){
@@ -109,7 +110,7 @@ public class GamePanel extends JPanel implements Runnable{
         long lastTime = System.nanoTime();
         long currentTime;
         long timer =0;
-        int DrowCount=0;
+      //  int DrowCount=0;
         while(gameThread!=null)
         {
 
@@ -124,12 +125,12 @@ public class GamePanel extends JPanel implements Runnable{
                 update();
                 repaint();
                 delta--;
-                DrowCount++;
+               // DrowCount++;
            }
 
             if(timer >= 1000000000){
               //  System.out.println("FPS: " + DrowCount);
-                DrowCount = 0;
+             //   DrowCount = 0;
                 timer =0;
             }
 
@@ -154,11 +155,14 @@ public class GamePanel extends JPanel implements Runnable{
                 } 
             }
 
-                        //NPC
+            //monster
             for(int i =0; i < monsters.length ;i++)
             {
                 if(monsters[i]!=null){
+                    if(monsters[i].alive && !monsters[i].dying )
                     monsters[i].update();
+                    else if(!monsters[i].alive)
+                    monsters[i]=null;
                 } 
             }
         }  
@@ -247,9 +251,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
         //empty entity list
-        for(int i =0; i < entityList.size(); i++){
-            entityList.remove(i);
-        }
+        entityList.clear();
     }
 
         public  void playMusic(int i){

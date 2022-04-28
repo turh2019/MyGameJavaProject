@@ -49,7 +49,7 @@ public class UI {
          }
 
     }
-
+    
     public void draw(Graphics2D g2){
         this.g2 = g2;
         g2.setFont(Arial_40);
@@ -83,9 +83,109 @@ public class UI {
             DrowDialogue();
             DrowPlayerLife();
         }
+
+        //pause dialogue
+        if(gp.gamestate == Gamestate.CharracterStatse)
+        { 
+            DrowCharracterStatse();
+            DrowPlayerLife();
+        }
+
     }
 
+    public void  DrowCharracterStatse()
+    {
+        //create Frame
+        final int  frameX = gp.tileSize * 2;
+        final int  frameY = gp.tileSize;
+        final int  farmWidth = gp.tileSize * 5;
+        final int  farmHeight = gp.tileSize * 10;
+        DrowWindow(frameX,frameY,farmWidth,farmHeight);
 
+        //Text
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(32f));
+
+        int textX = frameX + 20;
+        int textY = frameY  + gp.tileSize;
+        final int lineHeight = 35;
+
+        g2.drawString("level", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Life", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Strength", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Dexterity", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Attack", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Defens", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Exp", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Next Level", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Coins", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Weapon", textX, textY);
+        textY  += lineHeight;
+        g2.drawString("Shield", textX, textY);
+
+        //values
+        int tailX =(frameX + farmWidth) - 30;
+        textY = frameY  + gp.tileSize;
+        String value;
+
+        value = String.valueOf(gp.player.level);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+
+        value = String.valueOf(gp.player.life +" / " + gp.player.MaxLife);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+
+        value = String.valueOf(gp.player.strength);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+        
+        value = String.valueOf(gp.player.dexterity);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+
+        value = String.valueOf(gp.player.attack_);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+
+        value = String.valueOf(gp.player.defens);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+        
+        value = String.valueOf(gp.player.exp);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+        
+        value = String.valueOf(gp.player.nextLevelExp);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight;
+
+        value = String.valueOf(gp.player.coin);
+        textX = GetXForAlignToRightText(value,tailX);
+        g2.drawString(value, textX, textY);
+        textY  += lineHeight ;
+
+        g2.drawImage(gp.player.currentWeapon.img, tailX - gp.tileSize, textY - 35,null);
+        textY  += lineHeight ;
+        g2.drawImage(gp.player.currentShield.img, tailX - gp.tileSize, textY - 35,null);
+    }   
     
 
     public void drawPauseScreen()
@@ -242,5 +342,11 @@ public class UI {
             i++;
             x += gp.tileSize;
         }
+    }
+
+    public int GetXForAlignToRightText(String Text,int tailX){
+        int length = (int)g2.getFontMetrics().getStringBounds(Text, g2).getWidth();
+        int x = tailX - length;
+        return x;
     }
 }

@@ -26,6 +26,11 @@ public class KeyHandler implements KeyListener
     public void keyPressed(KeyEvent e) {
         int code =e.getKeyCode();
     
+
+
+
+
+
     if(gp.gamestate == Gamestate.Title)
     {
         if(code == KeyEvent.VK_W)
@@ -59,10 +64,7 @@ public class KeyHandler implements KeyListener
         }
 
     }    
-
-
-    //player state
-    if(gp.gamestate == Gamestate.GamePlay) 
+    else if(gp.gamestate == Gamestate.GamePlay) //player state
     { 
         if(code == KeyEvent.VK_W)
         {
@@ -93,28 +95,16 @@ public class KeyHandler implements KeyListener
         {
             EnterPressed =true;
         }
+        if(code == KeyEvent.VK_C)
+        {
+            gp.gamestate = Gamestate.CharracterStatse;
+        }
 
       }
-       
+               
 
-       // Game State
-        if(code == KeyEvent.VK_P) { 
-
-            switch (gp.gamestate) 
-            {
-                case GamePlay:
-                    gp.gamestate = Gamestate.Pause;
-                    break;
-                case Pause:
-                  
-                    gp.gamestate = Gamestate.GamePlay;
-                    break;
-                case dialogue:
-                  
-                    gp.gamestate = Gamestate.GamePlay;
-                    break;
-            }
-        }
+      
+        
 
 
         //Dialog System
@@ -163,7 +153,30 @@ public class KeyHandler implements KeyListener
             spacePressed =false;
             gp.player.isinteractNPC = false;
         }
-
+        // Game State
+        switch (gp.gamestate) 
+        {
+            case GamePlay:
+                if(code == KeyEvent.VK_P) 
+                    gp.gamestate = Gamestate.Pause;
+                break;
+            case Pause:
+                if(code == KeyEvent.VK_P) 
+                    gp.gamestate = Gamestate.GamePlay;
+                break;
+            case dialogue:
+                if(code == KeyEvent.VK_P) 
+                    gp.gamestate = Gamestate.GamePlay;
+                break;
+            case CharracterStatse:
+                if(code == KeyEvent.VK_C) 
+                    gp.gamestate = Gamestate.GamePlay;
+                break;
+            case Title:
+                break;
+            default:
+                break;
+        }
 
     }
     

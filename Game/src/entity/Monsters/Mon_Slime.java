@@ -1,10 +1,12 @@
-package Monsters;
+package entity.Monsters;
 
+import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import Main.GamePanel;
 import entity.Entity;
+
 
 public class Mon_Slime  extends Entity{
 
@@ -14,11 +16,13 @@ public class Mon_Slime  extends Entity{
         speed =1;
         MaxLife = 4;
         life =MaxLife;
+        speedSprit =4;
+        type = 2; 
 
-        soidArea.x = 3;
-        soidArea.y = 18;
-        soidArea.width = 42;
-        soidArea.height = 30;
+        soidArea.x = 15;
+        soidArea.y = 10;
+        soidArea.width = 20;
+        soidArea.height = 40;
         SolidAreaDefaultX =  soidArea.x;
         SolidAreaDefaultY =  soidArea.y;
         getImage();
@@ -27,16 +31,22 @@ public class Mon_Slime  extends Entity{
 
     void  getImage()
     {
-        numOfSprit=5;
+
+
+
+        numOfSprit=18;
         walkUpImgs = new BufferedImage[numOfSprit];
         walkDownImgs = new BufferedImage[numOfSprit];
         walkLeftImgs = new BufferedImage[numOfSprit];
         walkRightImgs = new BufferedImage[numOfSprit];
+
+
         for(int i =0; i < numOfSprit; i++){
-            walkUpImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" + i + ".png");
-            walkDownImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" + i +".png");
-            walkLeftImgs[i] =  setUp("/Monsters/Slime/Jump/png/Slime_Jump" + i + ".png");
-            walkRightImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" + i + ".png");
+
+            walkUpImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" + (i + 1) + ".png",3);
+            walkDownImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" +  (i + 1)  +".png",3);
+            walkLeftImgs[i] =  setUp("/Monsters/Slime/Jump/png/Slime_Jump" +  (i + 1)  + ".png",3);
+            walkRightImgs[i] = setUp("/Monsters/Slime/Jump/png/Slime_Jump" +  (i + 1)  + ".png",3);
         }
     }
     
@@ -60,6 +70,10 @@ public class Mon_Slime  extends Entity{
             direction ="right";
 
         actionLockCounter =0;
+    }
+    public void DamgeReaction(){
+        actionLockCounter = 0;
+        direction = gp.player.direction;
     }
 
 }

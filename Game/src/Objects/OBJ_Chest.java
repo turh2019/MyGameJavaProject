@@ -9,7 +9,7 @@ public class OBJ_Chest  extends Entity
     public OBJ_Chest (GamePanel gp){
         super(gp);
         name = "Chest";
-        img = setUp("/ObjectsImg/Key.png");
+        img = setUp("/ObjectsImg/Key.png",1);
         
     }
     
