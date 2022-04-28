@@ -33,8 +33,12 @@ public class AssetSetter {
         gp.npc[0].worldY = gp.tileSize*28;
     }
     public void SetMonster(){
-        gp.monsters[0] = new Mon_Slime(gp);
-        gp.monsters[0].worldX = gp.tileSize*20;
-        gp.monsters[0].worldY = gp.tileSize*20;
+        int maxmonster =5;
+        for(int i = 0 ; i < maxmonster;i++){
+            gp.monsters[i] = new Mon_Slime(gp);
+            gp.monsters[i].worldX = gp.tileSize* (20 + i);
+            gp.monsters[i].worldY = gp.tileSize* (20 + i);
+        }
+
     }
 }

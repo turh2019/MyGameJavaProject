@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
-
+import java.util.ArrayList;
 
 import Main.GamePanel.Gamestate;
 import Objects.OBJ_Heart;
@@ -30,7 +30,8 @@ public class UI {
 
     public int commandNum = 0;
 
-
+    ArrayList<String> massges = new ArrayList<>();
+    ArrayList<Integer> massgesCounter = new ArrayList<>();
     //PlayerShow  
     BufferedImage Heart_full,Heart_half,Heart_balnck;
     
@@ -67,6 +68,7 @@ public class UI {
         if(gp.gamestate == Gamestate.GamePlay)
         {
             DrowPlayerLife();
+            DrawMassage();
         }
 
         //pause state
@@ -298,12 +300,37 @@ public class UI {
 
 
 
-    public void showMessage(String text)
+    public void AddMessage(String text)
     {
-        message =text;
-        messageOn =true;
+       // message =text;
+        //messageOn =true;
+        massges.add(text);
+        massgesCounter.add(0);
     }
 
+    public void DrawMassage()
+    {
+        int massgeX = gp.tileSize;
+        int massgeY = gp.tileSize * 4;
+        g2.setFont(g2.getFont().deriveFont(Font.BOLD,32f));
+
+        for(int i = 0; i < massges.size();i++)
+        {
+            if(massges.get(i) != null){
+
+                g2.setColor(Color.white);
+                g2.drawString(massges.get(i),massgeX, massgeY);
+                int counter  = massgesCounter.get(i) + 1;
+                massgesCounter.set(i, counter);
+                massgeY += 50;
+
+                if( massgesCounter.get(i) > 180){
+                    massges.remove(i);
+                    massgesCounter.remove(i);
+                }
+            }
+        }
+    }
 
 
     public void DrowPlayerLife()

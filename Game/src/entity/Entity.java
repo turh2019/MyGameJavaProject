@@ -102,10 +102,14 @@ public class Entity
             
             if(type == 2 && contactPlayer)
             {
-                 if(gp.player.invincible == false){
+                 if(gp.player.invincible == false)
+                 {
                       // gp.PlaySound(i);
-                     gp.player.life -= 1;
-                     gp.player.invincible = true;
+                    int dmg  = attack_ - gp.player.defens;
+                    if(dmg < 0)
+                    dmg =0;
+                    gp.player.life -= dmg;
+                    gp.player.invincible = true;
                  }
             }
 

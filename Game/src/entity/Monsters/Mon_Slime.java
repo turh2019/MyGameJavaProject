@@ -12,13 +12,17 @@ public class Mon_Slime  extends Entity{
 
     public Mon_Slime(GamePanel gp) {
         super(gp);
+        type = 2; 
         name = "Green Slime";
         speed =1;
         MaxLife = 4;
-        life =MaxLife;
-        speedSprit =4;
-        type = 2; 
+        life = MaxLife;
+        attack_ = 5;
+        defens =0;
+        exp =2;
+        
 
+        speedSprit =4;
         soidArea.x = 15;
         soidArea.y = 10;
         soidArea.width = 20;

@@ -234,6 +234,7 @@ public class Player extends Entity
                     worldX += attackArea.height;
                     break;
                 }
+                
                 //attack = soidArea
                 soidArea.width = attackArea.width;
                 soidArea.height = attackArea.height;
@@ -268,7 +269,13 @@ public class Player extends Entity
             if(!invincible)
             {
                 // gp.PlaySound(i);
-                life -= 1;
+
+                int dmg  = gp.monsters[index].attack_ - defens;
+                if(dmg < 0)
+                    dmg =0;
+    
+
+                life -= dmg;
                 invincible = true;
             }
 
@@ -283,15 +290,46 @@ public class Player extends Entity
 
         if(gp.monsters[index].invincible == false){
             // gp.PlaySound(i);
-            gp.monsters[index].life -= 1;
+
+            int dmg  = attack_ - gp.monsters[index].defens;
+            if(dmg < 0)
+                dmg =0;
+
+            gp.monsters[index].life -= dmg;
+            gp.ui.AddMessage(dmg + " damage!");
+
             gp.monsters[index].invincible = true;
             gp.monsters[index].DamgeReaction();
 
             if(gp.monsters[index].life <= 0){
+
                 gp.monsters[index].dying = true;
+                gp.ui.AddMessage("killed the monster: " + gp.monsters[index].name);
+                exp += gp.monsters[index].exp;
+                gp.ui.AddMessage("Exp +" + gp.monsters[index].exp);
+                checkLevelUp();
             }
         }
 
+    }
+    
+    public void checkLevelUp()
+    {
+        if(exp >= nextLevelExp){
+             level++;
+             nextLevelExp = nextLevelExp *2;
+             MaxLife += 2;
+             strength++;
+             dexterity++;
+             attack_ = getAttack();
+             defens = getDefns();
+             
+             gp.gamestate = Gamestate.dialogue;
+             gp.ui.CurrentDialogue = "you are level " + level + " now\n"+
+             "you feel stronger!";
+
+             
+        }
     }
 
     public void PickUpItem(int index)
@@ -380,6 +418,22 @@ public class Player extends Entity
         g2.setColor(Color.red);
         g2.drawRect(screenX+ soidArea.x ,screenY+ soidArea.y,soidArea.width,soidArea.height);
 
+        int currentWorldX =screenX;
+        int currentWorldy = screenY;
+        int solidAreaWidth = attackArea.width;
+        int solidAreaHeight = attackArea.height;
+
+        //adjust player`s worldx/y for attackArea
+        switch (LastDiraction) {
+            case "left":
+            break;
+            case "right":
+            currentWorldX += attackArea.height;
+            break;
+        }
+
+        g2.setColor(Color.red);
+        g2.drawRect(currentWorldX + attackArea.x ,currentWorldy + attackArea.y,solidAreaWidth,solidAreaHeight);
 
 
         g2.drawImage(image,screenX ,screenY,null);
